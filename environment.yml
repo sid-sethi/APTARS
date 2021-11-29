@@ -1,4 +1,4 @@
-name: generate_isoforms
+name: aptars
 channels:
  - conda-forge
  - bioconda
