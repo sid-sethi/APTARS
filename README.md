@@ -6,7 +6,7 @@
 ![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)
 ![Linux](https://svgshare.com/i/Zhy.svg)
 ![Lifecycle:maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)
-![GPLv3 license](https://img.shields.io/badge/License-GPLv3-blue.svg)(https://github.com/sid-sethi/APTARS/blob/main/LICENSE)
+[![GPLv3 license](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/sid-sethi/APTARS/blob/main/LICENSE)
 <!-- badges: end -->
 
 APTARS is a `snakemake` pipeline that takes PacBio subreads as input, generates consensus reads using CCS, demultiplexes using lima, refines and cluster using isoseq3, map the reads to the genome using minimap2, assembles gene transcripts using cDNA_cupcake and annotates transcripts using Sqant3. Below is the dag of the pipeline:  
