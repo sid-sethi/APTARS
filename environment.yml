@@ -1,0 +1,18 @@
+name: generate_isoforms
+channels:
+ - conda-forge
+ - bioconda
+ - defaults
+dependencies:
+ - snakemake==5.32.2
+ - biopython==1.79
+ - pbccs==5.0.0
+ - isoseq3==3.4.0
+ - lima==2.0.0
+ - minimap2==2.17
+ - samtools==1.10
+ - cdna_cupcake=22.0.0
+ - r-base=4.0.3
+ - r-tidyverse
+ - bioconductor-genomeinfodbdata
+ - bioconductor-rtracklayer
