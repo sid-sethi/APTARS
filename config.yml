@@ -1,32 +1,33 @@
 ## General pipeline parameters:
+## For optional parameters either leave empty string ("") or comment out ("#") the parameter
 
-# working directory:
-workdir: "/media/data/Sid/PacBio_test_3"
+# working directory (required):
+workdir: "/media/data/Sid/PacBioTargeted/SNCA_iPSC"
 
-# prefix of all output files
-#sample_name: "SNCA_RFC1"
-sample_name: "left_ventricle_ENCSR194YUY"
+# prefix of all output files (optional; default = "sample")
+sample_name: "SNCA_iPSC"
 
+# reference genome (required)
 genome: "/media/data/Emil/references/GRCh38.primary_assembly.genome.fa"
 
-#input_bam: "/media/data/SNCA_iPSC_mDA_no-amp-all/r64045_20210423_160900/1_A01/m64045_210423_162058.subreads.bam"
-input_bam: "/media/data/SNCA_RFC1_04162021/r64045_20210416_173902/1_A01/m64045_210416_175105.subreads.bam"
+# input subreads BAM
+#input_bam: ""
 
-#primers: "/media/data/Emil/Pacbio_targeted_Iso-seq/SNCA_iPSC_targeted_Iso-seq_23042021/SNCA_iPSC_IsoSeq_23042021_primers.fa"
-primers: "/media/data/Emil/SNCA_RFC1_IsoSeq_16042021_primers.fa"
+# primers in fasta format
+primers: "/media/data/Emil/Pacbio_targeted_Iso-seq/SNCA_iPSC_targeted_Iso-seq_23042021/SNCA_iPSC_IsoSeq_23042021_primers.fa"
 
+# threads (default = 30)
 threads: 30
 
-# Genes of interest (optional parameter): Only the reads overlapping the gene locus will be selected from the SAM file.
-# input: gene_id of genes from the GTF file provided
+# Genes of interest (optional; default = ""): Only the reads overlapping the gene locus will be selected from the SAM file.
+# format: gene_id of genes from the GTF file provided
 # multiple genes can be provided seperated by a ";". For e.g., "ENSG00000145335.17;ENSG00000247775.2"
-# optional: otherwise leave empty string ""
 genes: "ENSG00000145335.17"
 
-
+# complete path to sqanti tool (required)
 sqanti_dir: "/media/data/Sid/Tools/SQANTI3-4.2"
 
-# input annotation data required for sqanti
+# input annotation data required for sqanti (required)
 # make sure the contig names in the annotation matches the input SAM file
 gtf: "/media/data/Emil/references/gencode.v38.annotation.gtf"
 cage: "/media/data/Sid/Annotation/refTSS_v3.3_human_coordinate.hg38.bed"

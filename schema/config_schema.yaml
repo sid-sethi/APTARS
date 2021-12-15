@@ -1,0 +1,63 @@
+$schema: "http://json-schema.org/draft-06/schema#"
+
+description: snakemake configuration file
+
+properties:
+  workdir:
+    type: string
+    minLength: 1
+
+  sample_name:
+    type: string
+    default: "sample"
+    minLength: 1
+
+  genome:
+    type: string
+    minLength: 1
+
+  input_bam:
+    type: string
+    default: ""
+
+  primers:
+    type: string
+    default: ""
+
+  genes:
+    type: string
+    default: ""
+
+  sqanti_dir:
+    type: string
+    minLength: 1
+
+  gtf:
+    type: string
+    minLength: 1
+
+  cage:
+    type: string
+    minLength: 1
+
+  intropolis:
+    type: string
+    minLength: 1
+
+  polya_atlas:
+    type: string
+    minLength: 1
+
+  threads:
+    type: integer
+    default: 30
+
+
+required:
+  - workdir
+  - genome
+  - sqanti_dir
+  - gtf
+  - cage
+  - intropolis
+  - polya_atlas

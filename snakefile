@@ -1,22 +1,27 @@
 import os
 import Bio
+import shutil
 from os import path
 from Bio import SeqIO
 from re import search
 
+from snakemake.utils import validate
 from snakemake.utils import min_version
 min_version("5.3")
 
 # ----------------------------------------------------------------
 
 configfile: "config.yml"
+validate(config, schema="schema/config_schema.yaml")
 workdir: config["workdir"]
 
 WORKDIR = config["workdir"]
 SNAKEDIR = path.dirname(workflow.snakefile)
 
-sample = config.get("sample_name", "sample")
-gene_ids = config.get("genes", "")
+shutil.copy2(SNAKEDIR + "/config.yml", WORKDIR)
+
+sample = config["sample_name"]
+gene_ids = config["genes"]
 
 
 # reading primer IDs into a list
@@ -26,9 +31,9 @@ if config.get("primers"):
     records = list(SeqIO.parse(config["primers"], "fasta"))
     for seq in records:
         if search("_5p", seq.id):
-            five_p = seq.id
+            five_p = seq.id.replace("-", "_")
         else:
-            primer_ids.append(seq.id)
+            primer_ids.append(seq.id.replace("-", "_"))
 
 # ----------------------------------------------------------------
 
@@ -42,8 +47,8 @@ rule all:
 
 rule generate_consensus_reads:
     input:
-        #bam = config["input_bam"]
-        bam = config.get("input_bam", "")
+        bam = config["input_bam"]
+        #bam = config.get("input_bam", "")
 
     output:
         ccs_bam = "Consensus_reads/" + sample + "_ccs.bam"
@@ -60,8 +65,8 @@ rule generate_consensus_reads:
 rule demultiplex:
     input:
         ccs_bam = rules.generate_consensus_reads.output.ccs_bam,
-        #primers = config["primers"]
-        primers = config.get("primers", "")
+        primers = config["primers"]
+        #primers = config.get("primers", "")
 
     output:
         bams = expand("Demultiplexed/" + sample + "." + five_p + "--{ids}.bam", ids=primer_ids)
@@ -98,8 +103,8 @@ rule generate_fofn:
 rule refine:
     input:
         fofn = rules.generate_fofn.output.fofn,
-        #primers = config["primers"]
-        primers = config.get("primers", "")
+        primers = config["primers"]
+        #primers = config.get("primers", "")
 
     output:
         flnc = "Refine/" + sample + "_flnc.bam",
@@ -301,7 +306,7 @@ rule sqanti_qc:
         res_dir = 'Sqanti/',
         prefix = sample,
         sqanti_dir = config["sqanti_dir"],
-        chunks = 10 if gene_ids == "" else 1
+        chunks = 2 if gene_ids == "" else 1
 
     threads: config["threads"]
 
@@ -311,5 +316,5 @@ rule sqanti_qc:
 
     shell:
         """
-        (PYTHONPATH=$CONDA_PREFIX/bin python {params.sqanti_dir}/sqanti3_qc.py {input.isoforms} {input.gtf} {input.genome} --cage_peak {input.cage} --polyA_peak {input.poly_peak} --polyA_motif_list {input.poly_motifs} -c {input.sjs} -t {threads} --chunks {params.chunks} --output {params.prefix} --dir {params.res_dir} --report html -fl {input.fl_count}) 2> {log}
+        (PYTHONPATH=$CONDA_PREFIX/bin python {params.sqanti_dir}/sqanti3_qc.py {input.isoforms} {input.gtf} {input.genome} --cage_peak {input.cage} --polyA_peak {input.poly_peak} --polyA_motif_list {input.poly_motifs} -c {input.sjs} -t {threads} --chunks {params.chunks} --output {params.prefix} --dir {params.res_dir} --report skip -fl {input.fl_count}) 2> {log}
         """
