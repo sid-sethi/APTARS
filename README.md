@@ -112,12 +112,12 @@ conda deactivate
 
 ## Output
 
-|__ working directory  
-   |__ config.yml # a copy of the parameters used in the pipeline  
-   |__ Consensus_reads/ # output of CCS  
-   |__ Demultiplxed/ # output of lima  
-   |__ Refine/ # output of isoseq3 refine  
-   |__ Cluster/ # output of isoseq3 cluster  
-   |__ Mapping/ # output of minimap2  
-   |__ Collapsed_isoforms/ # output of cDNA_cupcake  
-   |__ Sqanti/ # output of sqanti3  
+working directory
+|--- config.yml           # a copy of the parameters used in the pipeline
+|--- Consensus_reads/     # output of CCS 
+|--- Demultiplxed/        # output of lima
+|--- Refine/              # output of isoseq3 refine
+|--- Cluster/             # output of isoseq3 cluster
+|--- Mapping/             # output of minimap2
+|--- Collapsed_isoforms/  # output of cDNA_cupcake
+|--- Sqanti/              # output of sqanti3
