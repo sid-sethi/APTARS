@@ -112,7 +112,7 @@ conda deactivate
 
 ## Output
 
-working directory
+working directory  
 |--- config.yml           # a copy of the parameters used in the pipeline  
 |--- Consensus_reads/     # output of CCS  
 |--- Demultiplxed/        # output of lima  
