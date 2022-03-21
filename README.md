@@ -9,7 +9,7 @@
 [![GPLv3 license](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/sid-sethi/APTARS/blob/main/LICENSE)
 <!-- badges: end -->
 
-APTARS is a `snakemake` pipeline that takes PacBio subreads as input, generates consensus reads using CCS, demultiplexes using lima, refines and cluster using isoseq3, map the reads to the genome using minimap2, assembles gene transcripts using cDNA_cupcake and annotates transcripts using Sqant3. Below is the dag of the pipeline:  
+APTARS is a `snakemake` pipeline that takes PacBio subreads as input, generates consensus reads using CCS, demultiplexes using lima, refines and cluster using isoseq3, map the reads to the genome using minimap2, assembles gene transcripts using cDNA_cupcake and annotates transcripts using Sqant3. Note that **APTARS** can also be used for **un-targetted** Pacbio data. Below is the dag of the pipeline:  
 
 <p align="center">
   <img src="dag/dag.png" width="300" height="800"/>  
@@ -22,16 +22,37 @@ APTARS is a `snakemake` pipeline that takes PacBio subreads as input, generates 
 
 - PacBio subreads.bam
 - Primers in fasta format
+
+	Example format:
+
+	```bash
+	>Clontech_5p
+	AAGCAGTGGTATCAACGCAGAGTACATGGGG
+	>C1_3_UT_3p
+	CGCACTCTGATATGTGGTACTCTGCGTTGATACCACTGCTT
+	>C1_1_UT_3p
+	CTCACAGTCTGTGTGTGTACTCTGCGTTGATACCACTGCTT
+	>C3_1_UT_3p
+	CTCTCACGAGATGTGTGTACTCTGCGTTGATACCACTGCTT
+	>C4_1_UT_3p
+	CGCGCGTGTGTGCGTGGTACTCTGCGTTGATACCACTGCTT
+	```
+	
+	The primer ids **must** contain the information on whether they are 5 prime or 3 prime as "_5p" or "_3p" suffix respectively.
+
 - Reference genome assembly in fasta format
-- Gencode gtf
-- Cage peaks
-- Intropolis
-- Poly(a) atlas
+- GTF: [Gencode GTF](https://www.gencodegenes.org/human/); tested on v38 comprehensive CHR gene annotation
+- Cage peaks: [refTSS](http://reftss.clst.riken.jp/reftss/Main_Page); tested on `refTSS_v3.3_human_coordinate.hg38.bed`
+- [Intropolis](https://github.com/nellore/intropolis): tested on [intropolis.v1.hg19_with_liftover_to_hg38.min_count_10.tsv](https://github.com/Magdoll/images_public/tree/master/SQANTI2_support_data)
+- [Poly(a) atlas](https://polyasite.unibas.ch/): tested on [atlas.clusters.2.0.GRCh38.96.bed](https://polyasite.unibas.ch/atlas#2)
+- Poly(A) list: [Human Poly(A) list](https://github.com/Magdoll/images_public/tree/master/SQANTI2_support_data) included in the pipeline (`/data`) and is automatically used
+
+**Make sure the contig names in the annotation files and reference genome are the same.**
 
 ## Depedencies
 
 - [miniconda](https://conda.io/miniconda.html)
-- SQANTI3: v4.2 - https://github.com/ConesaLab/SQANTI3/archive/refs/tags/v4.2.tar.gz
+- [SQANTI3](https://github.com/ConesaLab/SQANTI3): v4.2 - https://github.com/ConesaLab/SQANTI3/archive/refs/tags/v4.2.tar.gz
 - The rest of the dependencies (including snakemake) are installed via conda through the `environment.yml` file
 
 **SQANTI3 setup:**  
@@ -88,3 +109,15 @@ To deactivate the conda environment:
 ```bash
 conda deactivate
 ```
+
+## Output
+
+|__ working directory
+   |__ config.yml # a copy of the parameters used in the pipeline
+   |__ Consensus_reads/ # output of CCS 
+   |__ Demultiplxed/ # output of lima
+   |__ Refine/ # output of isoseq3 refine
+   |__ Cluster/ # output of isoseq3 cluster
+   |__ Mapping/ # output of minimap2
+   |__ Collapsed_isoforms/ # output of cDNA_cupcake
+   |__ Sqanti/ # output of sqanti3
